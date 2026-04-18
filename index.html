@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Shriharikoushik M A — Engineer · Builder · AI Product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --void:#01020a;
+  --card:rgba(6,4,20,0.82);
+  --card2:rgba(8,6,26,0.88);
+  --b:rgba(255,255,255,0.07);
+  --bh:rgba(192,132,252,0.4);
+  --purple:#c084fc;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --green:#4ade80;
+  --gold:#fbbf24;
+  --t:#f0eeff;
+  --sub:#8892b0;
+  --dim:#2d3654;
+  --r:16px;--rl:24px;
+  --ambient:rgba(0,0,0,0);
+  --accent-glow:rgba(192,132,252,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--void);
+  color:var(--t);
+  overflow-x:hidden;
+  transition:background .8s ease, color .8s ease;
+}
+/* Ambient light overlay — changes with sun position */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:var(--ambient);
+  transition:background 1.2s ease;
+}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--void);}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px;}
+
+/* SCROLL PROGRESS */
+#sp{position:fixed;top:0;left:0;z-index:9999;height:2px;width:0;
+  background:linear-gradient(90deg,var(--purple),var(--blue));
+  box-shadow:0 0 8px var(--purple);transition:background .8s;}
+
+/* NAV */
+#nav{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:1000;
+  display:flex;align-items:center;gap:2px;padding:6px 8px;
+  background:rgba(6,4,20,.82);backdrop-filter:blur(24px);
+  border:1px solid var(--b);border-radius:50px;
+  transition:box-shadow .3s, background .8s, border-color .8s;
+}
+#nav.lit{box-shadow:0 4px 40px rgba(0,0,0,.6),0 0 30px var(--accent-glow);}
+.na{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.05em;
+  color:var(--sub);padding:7px 16px;border-radius:50px;
+  transition:color .2s,background .2s;}
+.na:hover,.na.on{color:var(--t);background:rgba(255,255,255,.06);}
+.na-cta{font-size:.72rem;font-weight:700;font-family:'Space Mono',monospace;
+  padding:8px 20px;border-radius:50px;background:var(--purple);color:#fff;
+  box-shadow:0 2px 20px var(--accent-glow);
+  transition:box-shadow .2s,transform .2s,background .8s;}
+.na-cta:hover{transform:translateY(-1px);}
+
+/* EARTH DRAG ZONE */
+#earth-zone{
+  position:fixed;border-radius:50%;z-index:1;
+  cursor:grab;
+  transition:box-shadow .4s;
+  pointer-events:all;
+  /* visual ring appears on hover */
+}
+#earth-zone:hover{
+  box-shadow:0 0 0 2px rgba(100,180,255,.22),0 0 40px rgba(100,180,255,.06);
+}
+#earth-zone.dragging{cursor:grabbing;}
+
+/* Earth hint tooltip */
+#earth-hint{
+  position:fixed;z-index:1001;pointer-events:none;
+  font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(180,210,255,.7);
+  background:rgba(4,8,24,.82);backdrop-filter:blur(10px);
+  border:1px solid rgba(100,180,255,.18);border-radius:50px;
+  padding:5px 12px;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .3s,transform .3s;
+  white-space:nowrap;
+}
+#earth-hint.show{opacity:1;transform:translateY(0);}
+
+/* TIME LABEL */
+#time-label{
+  position:fixed;bottom:28px;right:28px;z-index:1000;
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--sub);
+  display:flex;align-items:center;gap:8px;
+  background:rgba(6,4,20,.75);backdrop-filter:blur(12px);
+  border:1px solid var(--b);border-radius:50px;padding:6px 14px;
+  transition:color .8s,border-color .8s;
+}
+#time-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);
+  box-shadow:0 0 8px var(--purple);transition:background .8s,box-shadow .8s;
+  animation:tpulse 2s ease infinite;}
+@keyframes tpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.7);}}
+
+/* HERO */
+#hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:120px 80px 80px;
+  position:relative;z-index:2;gap:60px;
+  max-width:1300px;margin:0 auto;
+}
+.h-left{display:flex;flex-direction:column;align-items:flex-start;}
+.h-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 14px;border-radius:50px;border:1px solid rgba(74,222,128,.25);
+  color:var(--green);background:rgba(74,222,128,.06);margin-bottom:28px;
+  animation:fadeUp .6s ease .2s both;}
+.h-tag-dot{width:5px;height:5px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 6px var(--green);animation:tpulse 2s ease infinite;}
+.h-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(3.2rem,6vw,5.5rem);
+  font-weight:800;line-height:.92;letter-spacing:-2px;color:#fff;
+  margin-bottom:20px;animation:fadeUp .8s ease .3s both;}
+.h-name em{display:block;font-style:normal;
+  background:linear-gradient(135deg,var(--purple) 0%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  transition:background 1s ease;}
+.h-role{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;
+  font-size:clamp(.8rem,1.5vw,.95rem);color:var(--sub);margin-bottom:24px;height:1.8em;
+  animation:fadeUp .7s ease .45s both;}
+.h-role-val{color:var(--blue);font-weight:700;transition:color .8s;}
+.h-blink{display:inline-block;width:2px;height:.9em;background:var(--blue);
+  margin-left:2px;animation:blink 1s step-end infinite;transition:background .8s;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.h-bio{font-size:1rem;line-height:1.75;color:var(--sub);max-width:520px;
+  margin-bottom:36px;animation:fadeUp .7s ease .55s both;}
+.h-bio strong{color:var(--t);}
+.h-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px;
+  animation:fadeUp .7s ease .65s both;}
+.btn-p{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:50px;
+  font-size:.88rem;font-weight:600;cursor:pointer;border:none;
+  background:var(--purple);color:#fff;
+  box-shadow:0 8px 28px var(--accent-glow);
+  transition:transform .2s,box-shadow .2s,background .8s;}
+.btn-p:hover{transform:translateY(-2px);}
+.btn-g{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:50px;
+  font-size:.88rem;font-weight:600;cursor:pointer;
+  background:transparent;color:var(--t);border:1px solid var(--b);
+  transition:background .2s,border-color .2s,transform .2s;}
+.btn-g:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);transform:translateY(-2px);}
+.h-stats{display:flex;gap:0;border:1px solid var(--b);border-radius:var(--r);overflow:hidden;
+  animation:fadeUp .7s ease .8s both;transition:border-color .8s;}
+.hst{padding:16px 24px;text-align:center;border-right:1px solid var(--b);transition:background .2s,border-color .8s;}
+.hst:last-child{border-right:none;}
+.hst:hover{background:rgba(255,255,255,.03);}
+.hst-n{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:4px;transition:background .8s;}
+.hst-l{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.1em;}
+
+/* hero right — planet placeholder (now drawn on canvas) */
+.h-right{
+  display:flex;align-items:center;justify-content:center;
+  position:relative;animation:fadeUp .8s ease .4s both;
+  min-height:400px;
+}
+.h-right-info{
+  display:flex;flex-direction:column;gap:14px;position:relative;z-index:2;
+  pointer-events:none;
+}
+.fc{background:rgba(6,4,20,.88);border:1px solid var(--b);border-radius:12px;
+  padding:12px 18px;backdrop-filter:blur(16px);
+  font-family:'Space Mono',monospace;font-size:.68rem;
+  animation:floatCard 4s ease-in-out infinite;transition:border-color .8s;}
+.fc:nth-child(2){animation-delay:-1.5s;}
+.fc:nth-child(3){animation-delay:-3s;}
+@keyframes floatCard{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.fc-l{color:var(--dim);text-transform:uppercase;letter-spacing:.1em;font-size:.55rem;margin-bottom:4px;}
+.fc-v{color:var(--t);font-weight:700;font-size:.75rem;}
+.fc-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:5px;}
+
+/* SECTIONS */
+.sec{padding:100px 80px;max-width:1300px;margin:0 auto;position:relative;z-index:2;}
+.sdiv{height:1px;max-width:1300px;margin:0 auto;
+  background:linear-gradient(90deg,transparent,var(--b),transparent);}
+.sec-tag{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--purple);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;transition:color .8s;}
+.sec-tag::before{content:'';width:24px;height:1px;background:var(--purple);transition:background .8s;}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:700;letter-spacing:-1.5px;line-height:1.05;margin-bottom:14px;}
+.sec-sub{font-size:.97rem;color:var(--sub);max-width:550px;line-height:1.75;}
+.sec-head{margin-bottom:56px;}
+.gt{background:linear-gradient(135deg,#fff 20%,var(--purple) 60%,var(--blue) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* GLASS CARD */
+.gc{background:var(--card);border:1px solid var(--b);border-radius:var(--rl);
+  backdrop-filter:blur(16px);
+  transition:border-color .3s,box-shadow .3s,transform .4s cubic-bezier(.2,.6,.3,1),background .8s;}
+.gc:hover{border-color:rgba(192,132,252,.3);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(192,132,252,.06);
+  transform:translateY(-4px);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start;}
+.about-bio{padding:40px;}
+.about-bio p{font-size:.97rem;color:var(--sub);line-height:1.8;margin-bottom:14px;}
+.about-bio p:last-child{margin-bottom:0;}
+.about-bio strong{color:var(--t);}
+.about-facts{display:flex;flex-direction:column;gap:12px;}
+.fact-card{padding:20px;border-radius:var(--r);background:var(--card2);border:1px solid var(--b);
+  display:flex;align-items:flex-start;gap:14px;transition:border-color .2s,background .2s,background .8s;}
+.fact-card:hover{border-color:rgba(192,132,252,.25);background:rgba(192,132,252,.04);}
+.fact-ico{width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.fi-p{background:rgba(192,132,252,.12);}
+.fi-b{background:rgba(56,189,248,.12);}
+.fi-g{background:rgba(74,222,128,.12);}
+.fi-o{background:rgba(251,146,60,.12);}
+.fact-body h4{font-size:.9rem;font-weight:600;margin-bottom:3px;}
+.fact-body p{font-size:.78rem;color:var(--sub);line-height:1.5;margin:0;}
+
+/* EXPERIENCE */
+.exp-card{display:grid;grid-template-columns:280px 1fr;}
+.exp-sidebar{padding:40px 32px;border-right:1px solid var(--b);
+  background:rgba(192,132,252,.03);display:flex;flex-direction:column;gap:28px;}
+.exp-logo{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;
+  padding:14px 20px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(192,132,252,.15),rgba(56,189,248,.1));
+  border:1px solid rgba(192,132,252,.2);}
+.exp-period{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--sub);line-height:1.7;}
+.exp-period .live{color:var(--green);font-weight:700;}
+.exp-loc{font-size:.8rem;color:var(--dim);}
+.exp-status{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;
+  border-radius:50px;font-size:.7rem;font-weight:700;
+  background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--green);width:fit-content;}
+.exp-main{padding:40px;}
+.exp-role{font-family:'Space Grotesk',sans-serif;font-size:1.55rem;font-weight:700;margin-bottom:6px;}
+.exp-dept{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--purple);margin-bottom:28px;transition:color .8s;}
+.exp-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.ei{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;
+  background:rgba(255,255,255,.02);border:1px solid transparent;
+  font-size:.88rem;color:var(--sub);line-height:1.65;transition:border-color .2s,background .2s;}
+.ei:hover{border-color:var(--b);background:rgba(255,255,255,.04);}
+.ei strong{color:var(--t);}
+.eico{width:22px;height:22px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;margin-top:3px;}
+.ep{background:rgba(192,132,252,.15);}
+.eb{background:rgba(56,189,248,.15);}
+.eg{background:rgba(74,222,128,.15);}
+.eo{background:rgba(251,146,60,.15);}
+.exp-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.etag{font-family:'Space Mono',monospace;font-size:.65rem;padding:4px 10px;border-radius:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--b);color:var(--sub);
+  transition:border-color .2s,color .2s;}
+.etag:hover{border-color:rgba(192,132,252,.4);color:var(--purple);}
+
+/* PROJECTS */
+.row-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.row-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;
+  display:flex;align-items:center;gap:10px;}
+.row-more{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;
+  color:var(--sub);display:flex;align-items:center;gap:6px;transition:color .2s;}
+.row-more:hover{color:var(--purple);}
+.proj-row{display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;
+  scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;margin-bottom:40px;}
+.proj-row::-webkit-scrollbar{display:none;}
+.pc{flex:0 0 320px;background:var(--card2);border:1px solid var(--b);border-radius:var(--rl);
+  padding:28px;scroll-snap-align:start;cursor:default;
+  transition:border-color .3s,box-shadow .3s,transform .3s,background .8s;}
+.pc:hover{border-color:rgba(192,132,252,.35);
+  box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 30px rgba(192,132,252,.08);
+  transform:translateY(-5px) scale(1.01);}
+.pc-b:hover{border-color:rgba(56,189,248,.35);box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 30px rgba(56,189,248,.08);}
+.pc-g:hover{border-color:rgba(74,222,128,.35);box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 30px rgba(74,222,128,.08);}
+.pc-o:hover{border-color:rgba(251,146,60,.35);box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 30px rgba(251,146,60,.08);}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;gap:10px;}
+.pc-ico{width:48px;height:48px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.pi-p{background:rgba(192,132,252,.12);}.pi-b{background:rgba(56,189,248,.12);}
+.pi-g{background:rgba(74,222,128,.12);}.pi-o{background:rgba(251,146,60,.12);}
+.pi-v{background:rgba(124,58,237,.12);}
+.pbadge{font-family:'Space Mono',monospace;font-size:.6rem;font-weight:700;
+  padding:4px 10px;border-radius:50px;border:1px solid;white-space:nowrap;}
+.pbp{background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.3);color:var(--purple);}
+.pbb{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.3);color:var(--blue);}
+.pbg{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:var(--green);}
+.pbo{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);color:var(--orange);}
+.pbgold{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3);color:var(--gold);}
+.pc-name{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:5px;}
+.pc-org{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+.pc-desc{font-size:.84rem;color:var(--sub);line-height:1.65;margin-bottom:16px;}
+.pc-buls{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+.pcb{font-size:.8rem;color:var(--sub);line-height:1.5;display:flex;align-items:flex-start;gap:7px;}
+.pcb::before{content:'▸';color:var(--purple);flex-shrink:0;font-size:.62rem;margin-top:4px;transition:color .8s;}
+.pc-tech{display:flex;flex-wrap:wrap;gap:6px;}
+.ptech{font-family:'Space Mono',monospace;font-size:.62rem;padding:3px 8px;border-radius:4px;
+  background:rgba(255,255,255,.04);border:1px solid var(--b);color:var(--dim);}
+.boa-feat{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(56,189,248,.05));
+  border:1px solid rgba(192,132,252,.18);border-radius:var(--rl);padding:40px;
+  display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:32px;align-items:center;
+  margin-bottom:20px;transition:background .8s,border-color .8s;}
+.bf-divider{width:1px;height:100%;background:var(--b);}
+.bf-label{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.bf-title{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:8px;}
+.bf-desc{font-size:.85rem;color:var(--sub);line-height:1.6;}
+.bf-stat-n{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;
+  color:var(--blue);line-height:1;margin-bottom:4px;transition:color .8s;}
+.bf-stat-l{font-size:.78rem;color:var(--sub);}
+.bf-stats{display:flex;flex-direction:column;gap:16px;}
+
+/* SKILLS TERMINAL */
+.term{border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;
+  background:rgba(3,2,12,.95);transition:border-color .8s;}
+.term-bar{padding:12px 20px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--b);
+  display:flex;align-items:center;gap:12px;}
+.tdots{display:flex;gap:6px;}
+.td{width:11px;height:11px;border-radius:50%;}
+.tdr{background:#ef4444;opacity:.8;}.tdy{background:#f59e0b;opacity:.8;}.tdg{background:#22c55e;opacity:.8;}
+.tterm{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--dim);flex:1;text-align:center;}
+.term-body{padding:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.tg-head{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--purple);
+  margin-bottom:14px;letter-spacing:.08em;transition:color .8s;}
+.tg-head::before{content:'> ';color:var(--dim);}
+.spills{display:flex;flex-wrap:wrap;gap:7px;}
+.sp{font-size:.76rem;font-weight:500;padding:5px 12px;border-radius:50px;
+  border:1px solid var(--b);color:var(--sub);cursor:default;transition:all .2s;}
+.sp:hover{border-color:rgba(192,132,252,.4);color:var(--purple);background:rgba(192,132,252,.07);}
+.sp.sb:hover{border-color:rgba(56,189,248,.4);color:var(--blue);background:rgba(56,189,248,.07);}
+.sp.sg:hover{border-color:rgba(74,222,128,.4);color:var(--green);background:rgba(74,222,128,.07);}
+.sp.so:hover{border-color:rgba(251,146,60,.4);color:var(--orange);background:rgba(251,146,60,.07);}
+.sp.sy:hover{border-color:rgba(251,191,36,.4);color:var(--gold);background:rgba(251,191,36,.07);}
+
+/* AWARDS */
+.aw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.aw{padding:32px;display:flex;align-items:flex-start;gap:18px;
+  background:var(--card2);border:1px solid var(--b);border-radius:var(--rl);
+  transition:transform .3s,box-shadow .3s,border-color .3s,background .8s;}
+.aw-1:hover{border-color:rgba(251,191,36,.3);box-shadow:0 16px 50px rgba(251,191,36,.08);transform:translateY(-5px);}
+.aw-2:hover{border-color:rgba(192,132,252,.3);box-shadow:0 16px 50px rgba(192,132,252,.08);transform:translateY(-5px);}
+.aw-3:hover{border-color:rgba(56,189,248,.3);box-shadow:0 16px 50px rgba(56,189,248,.08);transform:translateY(-5px);}
+.aw-4:hover{border-color:rgba(74,222,128,.3);box-shadow:0 16px 50px rgba(74,222,128,.08);transform:translateY(-5px);}
+.aw-em{font-size:2rem;flex-shrink:0;}
+.aw-body h3{font-size:.97rem;font-weight:700;margin-bottom:8px;}
+.aw-body p{font-size:.83rem;color:var(--sub);line-height:1.6;}
+
+/* EDUCATION */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.edu-card,.pub-card{padding:36px;background:var(--card2);border:1px solid var(--b);
+  border-radius:var(--rl);transition:border-color .3s,transform .3s,background .8s;}
+.edu-card:hover{border-color:rgba(192,132,252,.25);transform:translateY(-4px);}
+.pub-card:hover{border-color:rgba(56,189,248,.25);transform:translateY(-4px);}
+.edu-deg{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:6px;}
+.edu-uni{font-size:.88rem;color:var(--purple);font-weight:600;margin-bottom:4px;transition:color .8s;}
+.edu-meta{font-size:.75rem;color:var(--dim);margin-bottom:18px;}
+.edu-pts{display:flex;flex-direction:column;gap:9px;}
+.edu-p{display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:var(--sub);line-height:1.5;}
+.edu-p::before{content:'◆';font-size:.4rem;color:var(--purple);flex-shrink:0;margin-top:5px;transition:color .8s;}
+.pub-eye{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px;transition:color .8s;}
+.pub-eye::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(56,189,248,.4),transparent);}
+.pub-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;line-height:1.4;margin-bottom:10px;}
+.pub-meta{font-size:.75rem;color:var(--dim);margin-bottom:12px;}
+.pub-desc{font-size:.83rem;color:var(--sub);line-height:1.65;}
+
+/* CONTACT */
+#contact{text-align:center;}
+.ct-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:48px 0;}
+.cc{flex:1;min-width:170px;max-width:220px;padding:28px 20px;background:var(--card2);
+  border:1px solid var(--b);border-radius:var(--rl);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:border-color .3s,transform .3s,box-shadow .3s,background .8s;cursor:pointer;}
+.cc:hover{border-color:rgba(192,132,252,.35);transform:translateY(-6px);
+  box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.cc-ico{font-size:1.7rem;}
+.cc-lbl{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--dim);}
+.cc-val{font-size:.8rem;font-weight:600;word-break:break-all;text-align:center;}
+.ct-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b);padding:32px 80px;max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  position:relative;z-index:2;transition:border-color .8s;}
+.ft{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);}
+.ft span{color:var(--purple);transition:color .8s;}
+.fl{display:flex;gap:20px;}
+.fl a{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);transition:color .2s;}
+.fl a:hover{color:var(--purple);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+
+/* ── RESPONSIVE ────────────────────────────── */
+
+/* Tablet landscape / small desktop */
+@media(max-width:1000px){
+  #hero{grid-template-columns:1fr;padding:110px 32px 60px;text-align:center;}
+  .h-left{align-items:center;}
+  .h-bio{max-width:100%;}
+  .h-right{display:none;}
+  .sec{padding:80px 32px;}
+  .about-grid{grid-template-columns:1fr;}
+  .exp-card{grid-template-columns:1fr;}
+  .exp-sidebar{border-right:none;border-bottom:1px solid var(--b);}
+  .boa-feat{grid-template-columns:1fr;text-align:center;}
+  .bf-divider{width:100%;height:1px;}
+  .aw-grid,.edu-grid{grid-template-columns:1fr;}
+  .term-body{grid-template-columns:1fr 1fr;}
+  footer{padding:24px 32px;flex-direction:column;text-align:center;}
+  #nav .na:not(.na-cta){display:none;}
+}
+
+/* Tablet portrait */
+@media(max-width:768px){
+  #nav{padding:5px 6px;gap:1px;}
+  #nav .na-cta{padding:7px 16px;font-size:.68rem;}
+
+  #hero{padding:96px 20px 52px;}
+  .h-tag{font-size:.6rem;}
+  .h-bio{font-size:.93rem;}
+  .h-btns{gap:10px;}
+  .btn-p,.btn-g{padding:11px 22px;font-size:.82rem;}
+
+  /* Stats: 2×2 grid */
+  .h-stats{display:grid;grid-template-columns:1fr 1fr;width:100%;}
+  .hst{border-right:1px solid var(--b);border-bottom:1px solid var(--b);}
+  .hst:nth-child(2n){border-right:none;}
+  .hst:nth-child(3),.hst:nth-child(4){border-bottom:none;}
+  .hst-n{font-size:1.55rem;}
+  .hst{padding:14px 16px;}
+
+  .sec{padding:60px 20px;}
+  .sec-title{letter-spacing:-1px;}
+  .about-bio{padding:24px;}
+  .exp-sidebar{padding:24px 20px;}
+  .exp-main{padding:24px 20px;}
+  .exp-role{font-size:1.3rem;}
+
+  .boa-feat{padding:24px;gap:20px;}
+  .bf-title{font-size:1rem;}
+  .bf-stat-n{font-size:1.6rem;}
+
+  .pc{flex:0 0 280px;padding:22px;}
+
+  .term-body{grid-template-columns:1fr;padding:24px;gap:24px;}
+
+  .aw{padding:24px;}
+  .edu-card,.pub-card{padding:26px;}
+
+  footer{padding:20px;}
+
+  #time-label{bottom:16px;right:16px;font-size:.58rem;padding:5px 10px;}
+}
+
+/* Phone */
+@media(max-width:480px){
+  #nav{
+    top:12px;padding:4px 6px;
+    /* Collapse to just CTA on very small screens */
+  }
+  #nav .na:not(.na-cta){display:none;}
+  #nav .na-cta{padding:7px 18px;}
+
+  #hero{padding:80px 16px 44px;}
+  .h-name{letter-spacing:-1.5px;}
+  .h-btns{flex-direction:column;align-items:stretch;gap:9px;}
+  .btn-p,.btn-g{justify-content:center;padding:13px 20px;}
+
+  .h-stats{grid-template-columns:1fr 1fr;}
+  .hst{padding:12px 10px;}
+  .hst-n{font-size:1.35rem;}
+  .hst-l{font-size:.52rem;}
+
+  .sec{padding:48px 16px;}
+  .sec-title{font-size:clamp(1.6rem,7vw,2.4rem);letter-spacing:-.5px;}
+  .sec-sub{font-size:.88rem;}
+
+  .about-bio{padding:20px;}
+  .about-bio p{font-size:.88rem;}
+  .fact-card{padding:16px;}
+
+  .exp-sidebar{padding:20px 16px;gap:18px;}
+  .exp-main{padding:20px 16px;}
+  .exp-role{font-size:1.2rem;}
+  .exp-list{gap:8px;}
+  .ei{font-size:.82rem;padding:11px 12px;}
+
+  .boa-feat{padding:18px;gap:16px;}
+  .bf-stat-n{font-size:1.5rem;}
+
+  /* Project cards: nearly full screen width */
+  .pc{flex:0 0 calc(100vw - 48px);padding:20px;}
+  .row-label{flex-direction:column;align-items:flex-start;gap:8px;}
+
+  .term{border-radius:var(--r);}
+  .term-body{padding:18px;gap:20px;}
+  .tg-head{font-size:.65rem;}
+  .sp{font-size:.72rem;padding:4px 10px;}
+
+  .aw{padding:18px;gap:12px;}
+  .aw-em{font-size:1.6rem;}
+  .aw-body h3{font-size:.88rem;}
+  .aw-body p{font-size:.78rem;}
+
+  .edu-card,.pub-card{padding:20px;}
+  .edu-deg{font-size:1.05rem;}
+
+  .ct-cards{gap:10px;margin:32px 0;}
+  .cc{min-width:calc(50% - 8px);max-width:none;padding:20px 14px;}
+  .ct-btns{flex-direction:column;align-items:stretch;}
+  .ct-btns .btn-p,.ct-btns .btn-g{justify-content:center;}
+
+  footer{padding:16px;gap:12px;}
+  .fl{gap:14px;flex-wrap:wrap;justify-content:center;}
+
+  #time-label{bottom:12px;right:12px;font-size:.55rem;padding:4px 9px;gap:5px;}
+  #time-dot{width:5px;height:5px;}
+}
+</style>
+</head>
+<body>
+<div id="sp"></div>
+
+<!-- CANVAS: Earth + Sun + Sky — z-index:-1 so content sits on top -->
+<canvas id="sky" style="position:fixed;inset:0;z-index:-1;pointer-events:none;"></canvas>
+
+<!-- Time of day label -->
+<div id="time-label">
+  <span id="time-dot"></span>
+  <span id="time-text">Night</span>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="na" href="#about">About</a>
+  <a class="na" href="#experience">Experience</a>
+  <a class="na" href="#projects">Projects</a>
+  <a class="na" href="#skills">Skills</a>
+  <a class="na" href="#awards">Awards</a>
+  <a class="na na-cta" href="#contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-left">
+    <div class="h-tag"><span class="h-tag-dot"></span>Open to PM &amp; Engineering Roles</div>
+    <h1 class="h-name">Shriharikoushik<em>M A</em></h1>
+    <div class="h-role">
+      <span style="color:var(--sub);font-weight:400">Builds</span>
+      <span class="h-role-val" id="tw"></span><span class="h-blink"></span>
+    </div>
+    <p class="h-bio"><strong>Software Engineer at Bank of America</strong> — 3 years building enterprise AML &amp; Risk systems, leading full Java 8→21 + Vaadin→React modernization, shipping AI agents, and competing in national hackathons.</p>
+    <div class="h-btns">
+      <a href="#projects" class="btn-p">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        View My Work
+      </a>
+      <a href="https://github.com/ShrihariKoushik" target="_blank" class="btn-g">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.6-4.04-1.6-.54-1.38-1.33-1.74-1.33-1.74-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.23 1.83 1.23 1.06 1.82 2.79 1.29 3.47.99.1-.77.41-1.3.75-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.17 0 0 1-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.01 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="Resume_Shriharikoushik.pdf" target="_blank" rel="noopener" class="btn-g">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z"/><path d="M4 20h16" stroke-linecap="round"/></svg>
+        Resume
+      </a>
+    </div>
+    <div class="h-stats">
+      <div class="hst"><div class="hst-n" data-count="2.9" data-suf="">2.9</div><div class="hst-l">Yrs at BoA</div></div>
+      <div class="hst"><div class="hst-n" data-count="2">2</div><div class="hst-l">BoA Awards</div></div>
+      <div class="hst"><div class="hst-n" data-count="6">6</div><div class="hst-l">Projects</div></div>
+      <div class="hst"><div class="hst-n" data-count="8" data-suf=".75">8.75</div><div class="hst-l">CGPA</div></div>
+    </div>
+  </div>
+  <div class="h-right">
+    <div class="h-right-info">
+      <div class="fc"><div class="fc-l">Current Role</div><div class="fc-v"><span class="fc-dot" style="background:#4ade80;box-shadow:0 0 6px #4ade80"></span>Software Engineer · BoA</div></div>
+      <div class="fc"><div class="fc-l">Stack</div><div class="fc-v"><span class="fc-dot" style="background:#38bdf8;box-shadow:0 0 6px #38bdf8"></span>Java 21 · React · Kafka</div></div>
+      <div class="fc"><div class="fc-l">Award</div><div class="fc-v"><span class="fc-dot" style="background:#c084fc;box-shadow:0 0 6px #c084fc"></span>Silver Award · EoM</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div class="sec-head">
+    <div class="sec-tag">About</div>
+    <h2 class="sec-title">Engineer. Builder. <span class="gt">Product Thinker.</span></h2>
+    <p class="sec-sub">~3 years turning regulatory complexity into elegant engineering at one of the world's largest banks.</p>
+  </div>
+  <div class="about-grid">
+    <div class="gc about-bio">
+      <p>I'm a <strong>Software Engineer at Bank of America</strong> (BA Continuum India), the sole <strong>Subject Matter Expert</strong> for a mission-critical AML and Risk Governance platform serving global banking operations.</p>
+      <p>Currently leading a full-stack <strong>legacy modernization initiative</strong> — migrating Spring Boot 1.x / Java 8 → Spring Boot 2.7.x / Java 21, containerizing with Docker, and replacing a Vaadin monolith with a <strong>decoupled React.js SPA</strong>. I own the dependency upgrade strategy, security config rewrite, and all API contracts.</p>
+      <p>I designed <strong>Tableau dashboards</strong> that surfaced critical compliance gaps across global workflows — earning both the <strong>Silver Award</strong> and <strong>Employee of the Month</strong>. An aspiring Product Manager who shipped two hackathon products in 2026 alone.</p>
+    </div>
+    <div class="about-facts">
+      <div class="fact-card"><div class="fact-ico fi-p">🏦</div><div class="fact-body"><h4>Bank of America · SME</h4><p>Sole SME for AML &amp; Risk Governance — engineering, Risk &amp; Governance liaison</p></div></div>
+      <div class="fact-card"><div class="fact-ico fi-b">🤖</div><div class="fact-body"><h4>AI/ML Product Dev</h4><p>LLM-powered agents, RAG pipelines, AI automation for regulated banking</p></div></div>
+      <div class="fact-card"><div class="fact-ico fi-g">🚀</div><div class="fact-body"><h4>Hackathon Builder × 2</h4><p>PFRDA APIX 2026 (2nd Runner-Up) · Solana Frontier 2026 participant</p></div></div>
+      <div class="fact-card"><div class="fact-ico fi-o">📊</div><div class="fact-body"><h4>Data-Driven Impact</h4><p>Tableau dashboards for compliance · Silver Award + Employee of the Month</p></div></div>
+    </div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- EXPERIENCE -->
+<section class="sec" id="experience">
+  <div class="sec-head">
+    <div class="sec-tag">Experience</div>
+    <h2 class="sec-title">Where I've <span class="gt">Made Impact</span></h2>
+    <p class="sec-sub">Nearly 3 years of enterprise engineering at Bank of America, leading technical transformation.</p>
+  </div>
+  <div class="gc exp-card">
+    <div class="exp-sidebar">
+      <div class="exp-logo">Bank of America</div>
+      <div class="exp-period"><div class="live">July 2023 →</div><div>Present</div><div style="color:var(--dim);font-size:.65rem;margin-top:6px;font-family:'Space Mono',monospace;">~3 YEARS</div></div>
+      <div class="exp-loc">📍 Hyderabad, India</div>
+      <div class="exp-status"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);flex-shrink:0"></span>Promoted</div>
+    </div>
+    <div class="exp-main">
+      <div class="exp-role">Software Engineer 1</div>
+      <div class="exp-dept">AML &amp; Risk Governance Platform · BA Continuum India</div>
+      <div class="exp-list">
+        <div class="ei"><span class="eico ep">★</span><span><strong>Subject Matter Expert:</strong> Sole SME for mission-critical AML and Risk Governance microservices — primary liaison between Engineering, Risk, and Governance globally.</span></div>
+        <div class="ei"><span class="eico eo">📊</span><span><strong>Silver Award + Employee of the Month:</strong> Designed Tableau dashboards surfacing compliance control gaps, enabling proactive risk remediation at enterprise scale.</span></div>
+        <div class="ei"><span class="eico eb">🤖</span><span><strong>AI/ML Development:</strong> Leading POCs for AI agents automating operational tasks; scoping LLM-powered workflows in a regulated banking environment.</span></div>
+        <div class="ei"><span class="eico ep">⚙️</span><span><strong>Legacy Modernization:</strong> Spring Boot 1.x / Java 8 → 2.7.x / Java 21, Dockerizing, replacing Vaadin monolith with React.js SPA. Full ownership of dependency upgrade strategy.</span></div>
+        <div class="ei"><span class="eico eg">⚡</span><span><strong>Platform Engineering:</strong> Architected microservices achieving <strong>25% reduction in resource utilization</strong>; Kafka event streaming for real-time global ops.</span></div>
+        <div class="ei"><span class="eico eb">☁️</span><span><strong>Cloud (AWS + Terraform):</strong> Provisioned and managed scalable AWS infrastructure using Terraform IaC for enterprise-grade deployment.</span></div>
+      </div>
+      <div class="exp-tags">
+        <span class="etag">Java 21</span><span class="etag">Spring Boot 2.7/3</span><span class="etag">Kafka</span>
+        <span class="etag">React.js</span><span class="etag">Docker</span><span class="etag">Kubernetes</span>
+        <span class="etag">AWS</span><span class="etag">Terraform</span><span class="etag">Tableau</span>
+        <span class="etag">OpenTelemetry</span><span class="etag">PostgreSQL</span><span class="etag">CI/CD</span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="sec-head">
+    <div class="sec-tag">Projects</div>
+    <h2 class="sec-title">Things I've <span class="gt">Built &amp; Shipped</span></h2>
+    <p class="sec-sub">Real GitHub projects — from AI retirement coaching to enterprise security gateways.</p>
+  </div>
+  <div class="boa-feat">
+    <div><div class="bf-label">🔒 Professional · Private Codebase</div><div class="bf-title">Bank of America — AML &amp; Risk Governance</div><div class="bf-desc">Production microservices platform for global banking compliance. Mission-critical, closed-source. Leading modernization, Kafka streaming, AI agent integrations.</div></div>
+    <div class="bf-divider"></div>
+    <div class="bf-stats"><div><div class="bf-stat-n">25%</div><div class="bf-stat-l">Resource utilization reduced</div></div><div><div class="bf-stat-n">Java 8→21</div><div class="bf-stat-l">Migration led end-to-end</div></div></div>
+    <div class="bf-divider"></div>
+    <div class="bf-stats"><div><div class="bf-stat-n">Vaadin→React</div><div class="bf-stat-l">Frontend fully decoupled</div></div><div><div class="bf-stat-n">Sole SME</div><div class="bf-stat-l">Subject matter expert</div></div></div>
+  </div>
+  <div class="row-label"><div class="row-title"><span>🏆</span> Hackathons &amp; AI Products</div><a href="https://github.com/ShrihariKoushik" target="_blank" class="row-more">GitHub<svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="margin-left:4px"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+  <div class="proj-row">
+    <div class="pc">
+      <div class="pc-top"><div class="pc-ico pi-p">🏛️</div><div class="pbadge pbgold">🥉 2nd Runner-Up</div></div>
+      <div class="pc-name">NPS Smart Retirement Coach</div><div class="pc-org">PFRDA APIX Hackathon 2026</div>
+      <div class="pc-desc">AI-powered multilingual retirement coach for India's 300M+ NPS subscribers. Presented to the PFRDA Chairman.</div>
+      <div class="pc-buls"><div class="pcb">Claude Sonnet 4 + Gemini 2.5 Flash for 5 Indian languages</div><div class="pcb">NPS calculator with corpus projections + traffic-light scoring</div><div class="pcb">Zero-PII, fully client-side on Vercel</div></div>
+      <div class="pc-tech"><span class="ptech">JavaScript</span><span class="ptech">Claude API</span><span class="ptech">Gemini API</span><span class="ptech">TTS</span><span class="ptech">Vercel</span></div>
+    </div>
+    <div class="pc pc-b">
+      <div class="pc-top"><div class="pc-ico pi-b">⛓️</div><div class="pbadge pbb">Solana Frontier '26 · Participant</div></div>
+      <div class="pc-name">ProofStack</div><div class="pc-org">Solana Frontier Hackathon 2026</div>
+      <div class="pc-desc">Decentralized credential verification protocol on Solana using compressed NFTs, targeting $1B+ global credential fraud.</div>
+      <div class="pc-buls"><div class="pcb">Compressed NFTs for cost-efficient on-chain credential storage</div><div class="pcb">End-to-end product from discovery to live demo</div></div>
+      <div class="pc-tech"><span class="ptech">Solana</span><span class="ptech">cNFTs</span><span class="ptech">Rust</span><span class="ptech">Web3.js</span></div>
+    </div>
+    <div class="pc pc-g">
+      <div class="pc-top"><div class="pc-ico pi-v">🔬</div><div class="pbadge pbg">IEEE Published · 2023</div></div>
+      <div class="pc-name">Motion Blur Restoration</div><div class="pc-org">IEEE Research Publication</div>
+      <div class="pc-desc">CV approach for ML-based motion blur image restoration. Peer-reviewed, published IEEE 2023.</div>
+      <div class="pc-tech"><span class="ptech">Python</span><span class="ptech">Computer Vision</span><span class="ptech">Deep Learning</span></div>
+    </div>
+  </div>
+  <div class="row-label"><div class="row-title"><span>💻</span> GitHub Projects</div></div>
+  <div class="proj-row">
+    <div class="pc pc-b">
+      <div class="pc-top"><div class="pc-ico pi-b">🛡️</div><div class="pbadge pbb">Enterprise · AI Security</div></div>
+      <div class="pc-name">VeriShield AI</div><div class="pc-org">github.com / VeriShield-AI</div>
+      <div class="pc-desc">Enterprise AI Gateway — intercepts requests, detects &amp; redacts PII, enforces compliance policies with full audit trail.</div>
+      <div class="pc-tech"><span class="ptech">TypeScript</span><span class="ptech">Node.js</span><span class="ptech">Gemini</span><span class="ptech">React</span></div>
+    </div>
+    <div class="pc pc-o">
+      <div class="pc-top"><div class="pc-ico pi-o">📡</div><div class="pbadge pbo">Automation · n8n</div></div>
+      <div class="pc-name">RSS → Discord AI Digest</div><div class="pc-org">github.com / rssFeed_discord_n8n</div>
+      <div class="pc-desc">Automated daily digest — 5 RSS feeds → OpenRouter + DeepSeek AI → Discord. Zero-cost n8n workflow.</div>
+      <div class="pc-tech"><span class="ptech">n8n</span><span class="ptech">OpenRouter</span><span class="ptech">DeepSeek</span><span class="ptech">Discord</span></div>
+    </div>
+    <div class="pc pc-g">
+      <div class="pc-top"><div class="pc-ico pi-g">🥗</div><div class="pbadge pbg">TypeScript · React</div></div>
+      <div class="pc-name">CalorieVision</div><div class="pc-org">github.com / CalorieVision</div>
+      <div class="pc-desc">AI-powered calorie tracking app with Vite + React + TypeScript + shadcn/ui.</div>
+      <div class="pc-tech"><span class="ptech">TypeScript</span><span class="ptech">React</span><span class="ptech">Vite</span><span class="ptech">Tailwind</span></div>
+    </div>
+    <div class="pc">
+      <div class="pc-top"><div class="pc-ico pi-p">💸</div><div class="pbadge pbp">FinTech · React</div></div>
+      <div class="pc-name">DebtZero</div><div class="pc-org">github.com / debtzero</div>
+      <div class="pc-desc">Personal debt management and payoff tracker built with TypeScript + React.</div>
+      <div class="pc-tech"><span class="ptech">TypeScript</span><span class="ptech">React</span><span class="ptech">Vite</span><span class="ptech">shadcn/ui</span></div>
+    </div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- SKILLS -->
+<section class="sec" id="skills">
+  <div class="sec-head">
+    <div class="sec-tag">Skills</div>
+    <h2 class="sec-title">My <span class="gt">Tech Arsenal</span></h2>
+    <p class="sec-sub">Full-stack from JVM to React, cloud to LLM pipelines — product thinking included.</p>
+  </div>
+  <div class="term">
+    <div class="term-bar"><div class="tdots"><div class="td tdr"></div><div class="td tdy"></div><div class="td tdg"></div></div><div class="tterm">skills.sh — shriharikoushik@cosmos</div></div>
+    <div class="term-body">
+      <div><div class="tg-head">engineering_core</div><div class="spills"><span class="sp">Java 21</span><span class="sp">Spring Boot 3</span><span class="sp">Spring 5</span><span class="sp">Microservices</span><span class="sp">Kafka</span><span class="sp">REST APIs</span><span class="sp">CI/CD</span></div></div>
+      <div><div class="tg-head">frontend_&amp;_fullstack</div><div class="spills"><span class="sp sb">React.js</span><span class="sp sb">TypeScript</span><span class="sp sb">Node.js</span><span class="sp sb">Vite</span><span class="sp sb">Tailwind</span><span class="sp sb">shadcn/ui</span><span class="sp sb">HTML/CSS</span></div></div>
+      <div><div class="tg-head">ai_&amp;_ml</div><div class="spills"><span class="sp">LLM Integration</span><span class="sp">AI Agents</span><span class="sp">RAG Pipelines</span><span class="sp">Prompt Engineering</span><span class="sp">Deep Learning</span><span class="sp">Claude API</span></div></div>
+      <div><div class="tg-head">cloud_&amp;_infrastructure</div><div class="spills"><span class="sp sg">AWS</span><span class="sp sg">Docker</span><span class="sp sg">Kubernetes</span><span class="sp sg">Terraform</span><span class="sp sg">IaC</span><span class="sp sg">OpenTelemetry</span></div></div>
+      <div><div class="tg-head">data_&amp;_analytics</div><div class="spills"><span class="sp so">Tableau</span><span class="sp so">SQL</span><span class="sp so">PostgreSQL</span><span class="sp so">MongoDB</span><span class="sp so">System Design</span><span class="sp so">HLD/LLD</span></div></div>
+      <div><div class="tg-head">product_strategy</div><div class="spills"><span class="sp sy">Product Strategy</span><span class="sp sy">Roadmapping</span><span class="sp sy">User Research</span><span class="sp sy">Agile/Scrum</span><span class="sp sy">OKR Setting</span><span class="sp sy">Stakeholder Mgmt</span></div></div>
+    </div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- AWARDS -->
+<section class="sec" id="awards">
+  <div class="sec-head">
+    <div class="sec-tag">Recognition</div>
+    <h2 class="sec-title">Awards &amp; <span class="gt">Achievements</span></h2>
+  </div>
+  <div class="aw-grid">
+    <div class="aw aw-1"><div class="aw-em">🥈</div><div class="aw-body"><h3>Silver Award — Bank of America</h3><p>Designed Tableau dashboards identifying compliance control gaps, improving governance outcomes at enterprise scale.</p></div></div>
+    <div class="aw aw-2"><div class="aw-em">⭐</div><div class="aw-body"><h3>Employee of the Month — Bank of America</h3><p>Recognized for outstanding cross-functional impact and technical ownership as sole SME.</p></div></div>
+    <div class="aw aw-3"><div class="aw-em">🏆</div><div class="aw-body"><h3>PFRDA APIX 2026 — 2nd Runner-Up</h3><p>Built and presented AI multilingual retirement coach to the PFRDA Chairman. National pension innovation challenge.</p></div></div>
+    <div class="aw aw-4"><div class="aw-em">🎓</div><div class="aw-body"><h3>3rd Rank — MCA Programme</h3><p>CGPA 8.75/10 at Amrita Vishwa Vidyapeetham. Top 3 in Master of Computer Applications (2021–2023).</p></div></div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- EDUCATION -->
+<section class="sec" id="education">
+  <div class="sec-head">
+    <div class="sec-tag">Education &amp; Research</div>
+    <h2 class="sec-title">Academic <span class="gt">Foundation</span></h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card gc">
+      <div class="edu-deg">Master of Computer Applications</div>
+      <div class="edu-uni">Amrita Vishwa Vidyapeetham</div>
+      <div class="edu-meta">📍 Mysore, India · June 2021 – June 2023</div>
+      <div class="edu-pts">
+        <div class="edu-p">CGPA 8.75/10 — 3rd Rank in MCA Programme</div>
+        <div class="edu-p">Software Engineering &amp; System Design (HLD/LLD)</div>
+        <div class="edu-p">Machine Learning, AI &amp; Deep Learning</div>
+      </div>
+    </div>
+    <div class="pub-card gc">
+      <div class="pub-eye">IEEE Publication · 2023</div>
+      <div class="pub-title">Computer Vision Approach for Motion Blur Image Restoration System</div>
+      <div class="pub-meta">Published in IEEE 2023 · Peer-Reviewed</div>
+      <div class="pub-desc">Research on ML-based motion blur restoration — deep learning architectures for high-fidelity image reconstruction.</div>
+    </div>
+  </div>
+</section>
+<div class="sdiv"></div>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="sec-tag" style="justify-content:center">Contact</div>
+  <h2 class="sec-title" style="text-align:center">Let's Build Something <span class="gt">Great</span></h2>
+  <p class="sec-sub" style="margin:16px auto 0;text-align:center">Open to PM, Engineering, and AI product roles.</p>
+  <div class="ct-cards">
+    <a href="mailto:shriharikoushik05@gmail.com" class="cc"><div class="cc-ico">📧</div><div class="cc-lbl">Email</div><div class="cc-val">shriharikoushik05@gmail.com</div></a>
+    <a href="https://www.linkedin.com/in/shriharikoushik" target="_blank" class="cc"><div class="cc-ico">💼</div><div class="cc-lbl">LinkedIn</div><div class="cc-val">in/shriharikoushik</div></a>
+    <a href="https://github.com/ShrihariKoushik" target="_blank" class="cc"><div class="cc-ico">🐙</div><div class="cc-lbl">GitHub</div><div class="cc-val">ShrihariKoushik</div></a>
+  </div>
+  <div class="ct-btns">
+    <a href="mailto:shriharikoushik05@gmail.com" class="btn-p"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="margin-right:4px"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Send Email</a>
+    <a href="https://github.com/ShrihariKoushik" target="_blank" class="btn-g">View GitHub</a>
+    <a href="Resume_Shriharikoushik.pdf" target="_blank" rel="noopener" class="btn-g"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="margin-right:4px"><path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z"/><path d="M4 20h16" stroke-linecap="round"/></svg>Download Resume</a>
+  </div>
+</section>
+
+<!-- Earth interactive drag zone (sits above canvas, below content) -->
+<div id="earth-zone"></div>
+<div id="earth-hint">drag to explore</div>
+
+<footer>
+  <div class="ft">© 2026 <span>Shriharikoushik M A</span> · Hyderabad, India</div>
+  <div class="fl"><a href="#about">About</a><a href="#projects">Projects</a><a href="https://github.com/ShrihariKoushik" target="_blank">GitHub</a><a href="#contact">Contact</a></div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   EARTH + SUN + SKY SYSTEM
+   ════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('sky');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize(){
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  buildEarthTexture();
+}
+window.addEventListener('resize', resize);
+
+/* ── STATE ─────────────────────────────────── */
+let scrollFrac   = 0;
+let earthRot     = 0;   // 0‑1, wraps
+let sunAngleDeg  = -90; // -90=midnight‑top, 0=east‑horizon, 90=noon, 180=west‑horizon
+let mousePX      = 0, mousePY = 0; // parallax
+
+document.addEventListener('mousemove', e => {
+  mousePX = (e.clientX / W - .5);
+  mousePY = (e.clientY / H - .5);
+});
+
+/* ── SCROLL HANDLER ────────────────────────── */
+let lastFrac = 0;
+window.addEventListener('scroll', () => {
+  const maxS = document.body.scrollHeight - window.innerHeight;
+  scrollFrac = maxS > 0 ? Math.min(Math.max(scrollY / maxS, 0), 1) : 0;
+  const delta = scrollFrac - lastFrac;
+  earthRot = (earthRot + delta * 1.8) % 1;
+  if(earthRot < 0) earthRot += 1;
+  lastFrac = scrollFrac;
+  // Sun completes one day cycle as you scroll 0→1
+  // start=night(-90°) → dawn(0°) → noon(90°) → sunset(180°) → night(270°=-90°)
+  sunAngleDeg = scrollFrac * 360 - 90;
+  updateTheme();
+  updateScrollUI();
+}, { passive: true });
+
+/* ── SUN POSITION ──────────────────────────── */
+function getSun(){
+  const rad = sunAngleDeg * Math.PI / 180;
+  // Arc center at screen bottom-centre
+  const cx = W * .5, cy = H;
+  const rx = W * .72, ry = H * .98;
+  return {
+    x: cx + rx * Math.cos(rad),
+    y: cy - ry * Math.sin(rad),
+    elev: Math.sin(rad), // ‑1 (midnight) … +1 (noon)
+    rad
+  };
+}
+
+/* ── THEME SYSTEM ──────────────────────────── */
+// elev: ‑1=night, ~0=horizon, +1=noon
+const themes = {
+  night:  { bg:'#01020a', card:'rgba(4,3,16,0.85)',  t:'#e8e4ff', sub:'#8892b0', purple:'#c084fc', blue:'#38bdf8', ambient:'rgba(0,5,30,0)',    dot:'#c084fc', dotGlow:'rgba(192,132,252,.6)', label:'Night 🌙',   accentGlow:'rgba(192,132,252,.15)' },
+  dawn:   { bg:'#0b0408', card:'rgba(20,8,6,0.82)',  t:'#ffe8cc', sub:'#c09070', purple:'#fb923c', blue:'#fbbf24', ambient:'rgba(255,90,10,.06)', dot:'#fb923c', dotGlow:'rgba(251,146,60,.7)',  label:'Dawn 🌅',    accentGlow:'rgba(251,146,60,.2)'   },
+  day:    { bg:'#031220', card:'rgba(3,18,38,0.78)', t:'#e8f4ff', sub:'#7aadcc', purple:'#38bdf8', blue:'#7dd3fc', ambient:'rgba(56,180,255,.05)',dot:'#38bdf8', dotGlow:'rgba(56,189,248,.7)', label:'Day ☀️',     accentGlow:'rgba(56,189,248,.18)'  },
+  noon:   { bg:'#020e1a', card:'rgba(2,14,32,0.75)', t:'#ffffff', sub:'#90c0e0', purple:'#60d0ff', blue:'#93e4ff', ambient:'rgba(80,200,255,.06)',dot:'#60d0ff', dotGlow:'rgba(96,208,255,.7)', label:'Noon 🌤️',   accentGlow:'rgba(96,208,255,.2)'   },
+  sunset: { bg:'#0a0210', card:'rgba(18,4,22,0.85)', t:'#ffd0a0', sub:'#b07060', purple:'#f97316', blue:'#ef4444', ambient:'rgba(255,60,0,.07)', dot:'#f97316', dotGlow:'rgba(249,115,22,.7)',  label:'Sunset 🌇',  accentGlow:'rgba(249,115,22,.2)'   },
+};
+
+let currentThemeKey = 'night';
+function updateTheme(){
+  const e = Math.sin(sunAngleDeg * Math.PI / 180);
+  let key;
+  // Map elevation to time
+  if(e < -.45)          key = 'night';
+  else if(e < .05)      key = scrollFrac < .5 ? 'dawn' : 'sunset';
+  else if(e < .55)      key = scrollFrac < .5 ? 'day'  : 'sunset';
+  else                  key = 'noon';
+
+  if(key === currentThemeKey) return;
+  currentThemeKey = key;
+  const T = themes[key];
+  const r = document.documentElement;
+  r.style.setProperty('--void',      T.bg);
+  r.style.setProperty('--card',      T.card);
+  r.style.setProperty('--card2',     T.card);
+  r.style.setProperty('--t',         T.t);
+  r.style.setProperty('--sub',       T.sub);
+  r.style.setProperty('--purple',    T.purple);
+  r.style.setProperty('--blue',      T.blue);
+  r.style.setProperty('--ambient',   T.ambient);
+  r.style.setProperty('--accent-glow', T.accentGlow);
+
+  const dot = document.getElementById('time-dot');
+  const lbl = document.getElementById('time-text');
+  if(dot){ dot.style.background = T.dot; dot.style.boxShadow = `0 0 8px ${T.dotGlow}`; }
+  if(lbl) lbl.textContent = T.label;
+}
+
+/* ── STARS ─────────────────────────────────── */
+const STARS = Array.from({length:320}, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random() * 1.4 + .3,
+  a: Math.random() * .7 + .15,
+  speed: Math.random() * .008 + .002,
+  phase: Math.random() * Math.PI * 2,
+  col: Math.random()>.88 ? '#c084fc' : Math.random()>.8 ? '#38bdf8' : '#ffffff'
+}));
+
+function drawStars(starOpacity, t){
+  if(starOpacity <= .01) return;
+  STARS.forEach(s => {
+    const twinkle = s.a + Math.sin(t * s.speed + s.phase) * .3;
+    ctx.beginPath();
+    // parallax offset — stars shift slightly with mouse
+    const px = (s.x + mousePX * .012 * s.r) * W;
+    const py = (s.y + mousePY * .008 * s.r) * H;
+    ctx.arc(px, py, s.r, 0, Math.PI*2);
+    ctx.fillStyle = s.col;
+    ctx.globalAlpha = Math.max(0, Math.min(1, twinkle * starOpacity));
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+
+/* ── EARTH TEXTURE (pre‑rendered offscreen) ── */
+let earthTex = null;
+const TEX_W = 1600, TEX_H = 800;
+
+function buildEarthTexture(){
+  const oc = document.createElement('canvas');
+  oc.width = TEX_W; oc.height = TEX_H;
+  const tc = oc.getContext('2d');
+
+  // Ocean
+  const og = tc.createLinearGradient(0, 0, 0, TEX_H);
+  og.addColorStop(0,   '#0b2a4a');
+  og.addColorStop(.45, '#0d3060');
+  og.addColorStop(1,   '#071a35');
+  tc.fillStyle = og; tc.fillRect(0,0,TEX_W,TEX_H);
+
+  // Simplified continent polygons
+  // Coords in 0-1 space (x=longitude, y=latitude)
+  const continents = [
+    { c:'#2e5c28', pts:[[.03,.15],[.12,.10],[.22,.10],[.29,.16],[.31,.26],[.28,.36],[.22,.44],[.16,.50],[.10,.46],[.05,.37],[.03,.25]] }, // N.America
+    { c:'#c0c8b0', pts:[[.18,.03],[.27,.02],[.32,.08],[.27,.14],[.19,.14]] }, // Greenland
+    { c:'#28521e', pts:[[.18,.47],[.29,.46],[.32,.54],[.30,.67],[.25,.77],[.20,.79],[.15,.72],[.14,.60]] }, // S.America
+    { c:'#3d5c34', pts:[[.42,.12],[.52,.08],[.58,.12],[.60,.20],[.56,.28],[.50,.30],[.43,.26],[.41,.18]] }, // Europe
+    { c:'#5a4820', pts:[[.44,.28],[.60,.26],[.64,.38],[.62,.54],[.56,.66],[.50,.72],[.44,.64],[.42,.50],[.44,.38]] }, // Africa
+    { c:'#4a5c38', pts:[[.56,.08],[.84,.06],[.96,.10],[.99,.20],[.97,.32],[.90,.42],[.82,.48],[.72,.50],[.60,.46],[.57,.36],[.56,.22]] }, // Asia
+    { c:'#6a5228', pts:[[.66,.32],[.74,.28],[.78,.40],[.74,.52],[.68,.52],[.64,.43]] }, // India
+    { c:'#7a5e28', pts:[[.77,.55],[.92,.52],[.97,.58],[.95,.72],[.87,.76],[.78,.72],[.76,.63]] }, // Australia
+    { c:'#d8e8f0', pts:[[.00,.88],[1.0,.88],[1.0,1.0],[.00,1.0]] }, // Antarctica
+  ];
+
+  continents.forEach(({c, pts}) => {
+    tc.beginPath();
+    pts.forEach(([nx,ny], i) => {
+      const px = nx * TEX_W, py = ny * TEX_H;
+      i===0 ? tc.moveTo(px,py) : tc.lineTo(px,py);
+    });
+    tc.closePath();
+    tc.fillStyle = c;
+    tc.fill();
+    // subtle land detail
+    tc.strokeStyle = 'rgba(0,0,0,.12)';
+    tc.lineWidth = 1;
+    tc.stroke();
+  });
+
+  // Ice caps
+  const iceN = tc.createLinearGradient(0,0,0,TEX_H*.12);
+  iceN.addColorStop(0,'rgba(230,240,255,.9)'); iceN.addColorStop(1,'rgba(230,240,255,0)');
+  tc.fillStyle = iceN; tc.fillRect(0,0,TEX_W,TEX_H*.12);
+
+  // Cloud layer (white blobs)
+  tc.globalAlpha = .25;
+  for(let i=0; i<80; i++){
+    const cx2 = Math.random()*TEX_W, cy2 = Math.random()*TEX_H*.75+TEX_H*.08;
+    const rr = Math.random()*60+20;
+    const cg = tc.createRadialGradient(cx2,cy2,0,cx2,cy2,rr);
+    cg.addColorStop(0,'rgba(255,255,255,.9)');
+    cg.addColorStop(1,'rgba(255,255,255,0)');
+    tc.fillStyle = cg; tc.beginPath(); tc.ellipse(cx2,cy2,rr,rr*.45,Math.random()*Math.PI,0,Math.PI*2); tc.fill();
+  }
+  tc.globalAlpha = 1;
+
+  earthTex = oc;
+}
+
+/* ── DRAW EARTH ────────────────────────────── */
+function drawEarth(sun){
+  // Earth center — large sphere, lower half hidden below screen
+  const er = Math.min(W, H) * .55;
+  const ex = W * .72;
+  const ey = H * .88;
+
+  // Atmosphere outer glow
+  const atmR = er + 22;
+  const atm = ctx.createRadialGradient(ex, ey, er-8, ex, ey, atmR);
+  const atmCol = sun.elev > .1 ? '100,180,255' : sun.elev > -.1 ? '200,120,60' : '80,100,200';
+  atm.addColorStop(0, `rgba(${atmCol},.45)`);
+  atm.addColorStop(.5,`rgba(${atmCol},.12)`);
+  atm.addColorStop(1, `rgba(${atmCol},0)`);
+  ctx.beginPath(); ctx.arc(ex, ey, atmR, 0, Math.PI*2);
+  ctx.fillStyle = atm; ctx.fill();
+
+  // Clip to sphere
+  ctx.save();
+  ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI*2); ctx.clip();
+
+  // Draw texture (tiled, shifted by earthRot)
+  if(earthTex){
+    const tw = TEX_W / TEX_H * er * 2;
+    const th = er * 2;
+    const offset = (earthRot % 1) * tw;
+    const sx = ex - er - offset;
+    const sy = ey - er;
+    ctx.drawImage(earthTex, sx,       sy, tw, th);
+    ctx.drawImage(earthTex, sx + tw,  sy, tw, th);
+    ctx.drawImage(earthTex, sx - tw,  sy, tw, th);
+  }
+
+  // Day/night terminator — shadow from sun direction
+  const termAngle = sun.rad;
+  const termX = ex + Math.cos(termAngle) * er;
+  const termY = ey - Math.sin(termAngle) * er;
+  const shadowGrad = ctx.createRadialGradient(termX, termY, 0, ex, ey, er * 1.05);
+  shadowGrad.addColorStop(0,   'rgba(0,0,0,0)');
+  shadowGrad.addColorStop(.38, 'rgba(0,0,0,0)');
+  shadowGrad.addColorStop(.55, 'rgba(0,5,20,.45)');
+  shadowGrad.addColorStop(1,   'rgba(0,5,20,.88)');
+  ctx.fillStyle = shadowGrad; ctx.fillRect(ex-er, ey-er, er*2, er*2);
+
+  // Atmosphere edge inside sphere
+  const edgeGrad = ctx.createRadialGradient(ex,ey,er*.82,ex,ey,er);
+  edgeGrad.addColorStop(0,'rgba(0,0,0,0)');
+  edgeGrad.addColorStop(1,'rgba(5,15,50,.55)');
+  ctx.fillStyle = edgeGrad; ctx.fillRect(ex-er,ey-er,er*2,er*2);
+
+  ctx.restore();
+
+  // Atmosphere ring stroke
+  ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI*2);
+  ctx.strokeStyle = sun.elev > .1 ? 'rgba(100,180,255,.3)' : sun.elev > -.1 ? 'rgba(255,140,80,.3)' : 'rgba(80,100,200,.2)';
+  ctx.lineWidth = 3; ctx.stroke();
+}
+
+/* ── DRAW SUN ──────────────────────────────── */
+function drawSun(sun){
+  if(sun.elev < -.12) return; // below horizon — invisible
+  const alpha = Math.min(1, (sun.elev + .12) / .25);
+  const sr = 48;
+
+  // Far corona
+  const corona2 = ctx.createRadialGradient(sun.x,sun.y,sr,sun.x,sun.y,sr*12);
+  corona2.addColorStop(0,'rgba(255,220,100,.18)');
+  corona2.addColorStop(.3,'rgba(255,180,60,.06)');
+  corona2.addColorStop(1,'rgba(255,140,40,0)');
+  ctx.globalAlpha = alpha;
+  ctx.beginPath(); ctx.arc(sun.x,sun.y,sr*12,0,Math.PI*2);
+  ctx.fillStyle = corona2; ctx.fill();
+
+  // Inner glow
+  const corona1 = ctx.createRadialGradient(sun.x,sun.y,0,sun.x,sun.y,sr*3.5);
+  corona1.addColorStop(0,'rgba(255,255,200,1)');
+  corona1.addColorStop(.15,'rgba(255,240,160,.85)');
+  corona1.addColorStop(.5,'rgba(255,200,80,.35)');
+  corona1.addColorStop(1,'rgba(255,160,40,0)');
+  ctx.beginPath(); ctx.arc(sun.x,sun.y,sr*3.5,0,Math.PI*2);
+  ctx.fillStyle = corona1; ctx.fill();
+
+  // Sun disc
+  const disc = ctx.createRadialGradient(sun.x-sr*.2,sun.y-sr*.2,0,sun.x,sun.y,sr);
+  disc.addColorStop(0,'rgba(255,255,240,1)');
+  disc.addColorStop(.6,'rgba(255,230,100,1)');
+  disc.addColorStop(1,'rgba(255,180,40,1)');
+  ctx.beginPath(); ctx.arc(sun.x,sun.y,sr,0,Math.PI*2);
+  ctx.fillStyle = disc; ctx.fill();
+
+  ctx.globalAlpha = 1;
+}
+
+/* ── DRAW SKY GRADIENT ─────────────────────── */
+function drawSky(sun){
+  const e = sun.elev;
+  let colors;
+  if(e < -.3)       colors = ['#000614','#010820','#020310'];           // deep night
+  else if(e < -.05) colors = ['#0a0318','#200a04','#3a1008'];           // pre-dawn / post-sunset
+  else if(e < .15)  colors = ['#1a0820','#c83a00','#ff8c3a'];           // horizon glow dawn/dusk
+  else if(e < .4)   colors = ['#060f28','#1a4a8a','#4a90d9'];           // morning / evening
+  else              colors = ['#030d1e','#0f3060','#1a5a9a'];           // full day
+
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0,   colors[0]);
+  g.addColorStop(.5,  colors[1]);
+  g.addColorStop(1,   colors[2]);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+/* ── MOON ──────────────────────────────────── */
+function drawMoon(sun, t){
+  // Moon is opposite to sun
+  const moonAngle = sun.rad + Math.PI;
+  const cx2 = W*.5, cy2 = H;
+  const rx = W*.72, ry = H*.98;
+  const mx = cx2 + rx*Math.cos(moonAngle);
+  const my = cy2 - ry*Math.sin(moonAngle);
+  const moonElev = Math.sin(moonAngle);
+  if(moonElev < -.05) return;
+  const alpha = Math.min(.85, (moonElev+.05)*.8) * Math.min(1, (-.3 - sun.elev)/.4 + 1);
+  if(alpha <= .02) return;
+  ctx.globalAlpha = alpha;
+  const mr = 22;
+  const mg = ctx.createRadialGradient(mx-mr*.2,my-mr*.2,0,mx,my,mr*2.5);
+  mg.addColorStop(0,'rgba(200,210,230,.25)');
+  mg.addColorStop(1,'rgba(180,190,220,0)');
+  ctx.beginPath();ctx.arc(mx,my,mr*2.5,0,Math.PI*2);ctx.fillStyle=mg;ctx.fill();
+  const disc2 = ctx.createRadialGradient(mx-mr*.25,my-mr*.25,0,mx,my,mr);
+  disc2.addColorStop(0,'#e8eef8');disc2.addColorStop(.7,'#c8d4e8');disc2.addColorStop(1,'#a8b8d0');
+  ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fillStyle=disc2;ctx.fill();
+  // Shadow
+  ctx.beginPath();ctx.arc(mx+mr*.35,my,mr,0,Math.PI*2);
+  ctx.fillStyle='rgba(4,8,20,.88)';ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+/* ── HORIZON GLOW ──────────────────────────── */
+function drawHorizonGlow(sun){
+  if(Math.abs(sun.elev) > .35) return;
+  const alpha = 1 - Math.abs(sun.elev) / .35;
+  const col = scrollFrac < .5 ? '255,120,40' : '220,60,20';
+  // Glow on the horizon where the sun is
+  const hg = ctx.createRadialGradient(sun.x, H*.92, 0, sun.x, H*.92, W*.6);
+  hg.addColorStop(0,`rgba(${col},${alpha*.55})`);
+  hg.addColorStop(.4,`rgba(${col},${alpha*.12})`);
+  hg.addColorStop(1,`rgba(${col},0)`);
+  ctx.fillStyle = hg;
+  ctx.fillRect(0, 0, W, H);
+}
+
+/* ── MAIN RENDER LOOP ──────────────────────── */
+let t = 0;
+function render(){
+  ctx.clearRect(0, 0, W, H);
+  const sun = getSun();
+
+  drawSky(sun);
+
+  // Stars — visible when sun is low
+  const starVis = Math.max(0, Math.min(1, (-sun.elev - .05) / .4 + 1));
+  // starVis=1 at night, 0 during day
+  const starOpacity = sun.elev < .35 ? Math.max(0, 1 - (sun.elev + .05) / .4) : 0;
+  drawStars(starOpacity, t);
+
+  drawHorizonGlow(sun);
+  drawMoon(sun, t);
+  drawSun(sun);
+  drawEarth(sun);
+
+  t++;
+  requestAnimationFrame(render);
+}
+
+/* ── SCROLL UI ─────────────────────────────── */
+function updateScrollUI(){
+  const sp2 = document.getElementById('sp');
+  if(sp2) sp2.style.width = (scrollFrac*100)+'%';
+  const nav = document.getElementById('nav');
+  if(nav) nav.classList.toggle('lit', scrollY > 50);
+  document.querySelectorAll('.na:not(.na-cta)').forEach(a=>{
+    const s = document.getElementById(a.getAttribute('href').slice(1));
+    if(!s) return;
+    const r = s.getBoundingClientRect();
+    a.classList.toggle('on', r.top <= 120 && r.bottom > 120);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   PORTFOLIO INTERACTIONS
+   ═══════════════════════════════════════════════════════ */
+
+/* Typewriter */
+const tw = document.getElementById('tw');
+if(tw){
+  const roles = ['AI products','banking systems','React frontends','LLM agents','Kafka pipelines','Web3 protocols','enterprise systems'];
+  let ri=0,ci=0,del=false;
+  tw.textContent = 'A';
+  function type(){
+    try{
+      const w=roles[ri];
+      if(!del){ ci++; tw.textContent=w.slice(0,ci); if(ci>=w.length){del=true;setTimeout(type,2000);return;} }
+      else { ci--; tw.textContent=w.slice(0,ci); if(ci<=0){del=false;ci=0;ri=(ri+1)%roles.length;} }
+      setTimeout(type, del?55:85);
+    }catch(e){}
+  }
+  setTimeout(type, 600);
+}
+
+/* Counters */
+function runCounter(el){
+  if(el.dataset.done) return;
+  el.dataset.done = '1';
+  const target = parseFloat(el.dataset.count);
+  const suf = el.dataset.suf||'';
+  const isInt = Number.isInteger(target);
+  const steps=55, dur=1400;
+  let step=0;
+  const id = setInterval(()=>{
+    step++;
+    const p = Math.min(step/steps, 1);
+    const e = 1 - Math.pow(1-p, 3);
+    el.textContent = (isInt ? Math.round(e*target) : (e*target).toFixed(2)) + suf;
+    if(step >= steps) clearInterval(id);
+  }, dur/steps);
+}
+setTimeout(()=>document.querySelectorAll('[data-count]').forEach(runCounter), 300);
+
+/* 3D tilt */
+document.querySelectorAll('.gc,.pc,.aw').forEach(card=>{
+  card.addEventListener('mousemove', e=>{
+    const r = card.getBoundingClientRect();
+    const rx2 = ((e.clientY-r.top-r.height/2)/r.height)*-6;
+    const ry2 = ((e.clientX-r.left-r.width/2)/r.width)*6;
+    card.style.transform = `perspective(800px) rotateX(${rx2}deg) rotateY(${ry2}deg) translateZ(4px) translateY(-5px)`;
+    card.style.transition = 'transform .05s';
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
+    card.style.transition = 'transform .5s ease';
+  });
+});
+
+/* Magnetic buttons */
+document.querySelectorAll('.btn-p,.btn-g,.na-cta').forEach(btn=>{
+  btn.addEventListener('mousemove', e=>{
+    const r = btn.getBoundingClientRect();
+    const x = (e.clientX-r.left-r.width/2)*.2;
+    const y = (e.clientY-r.top-r.height/2)*.3;
+    btn.style.transform = `translate(${x}px,${y}px) translateY(-2px)`;
+  });
+  btn.addEventListener('mouseleave', ()=>btn.style.transform='');
+});
+
+/* Smooth nav */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const t2 = document.getElementById(a.getAttribute('href').slice(1));
+    if(t2){ e.preventDefault(); t2.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+/* ── EARTH INTERACTIVE DRAG ────────────────── */
+const earthZone = document.getElementById('earth-zone');
+const earthHint = document.getElementById('earth-hint');
+let isDragging = false, dragStartX = 0, dragStartRot = 0, dragStartSun = 0;
+let hintTimer = null;
+
+function positionEarthZone(){
+  if(!earthZone) return;
+  const er2 = Math.min(W,H) * .55;
+  const ex2 = W * .72;
+  const ey2 = H * .88;
+  earthZone.style.left   = (ex2 - er2) + 'px';
+  earthZone.style.top    = (ey2 - er2) + 'px';
+  earthZone.style.width  = (er2 * 2) + 'px';
+  earthZone.style.height = (er2 * 2) + 'px';
+}
+
+function showHint(x, y){
+  if(!earthHint) return;
+  earthHint.style.left = (x + 16) + 'px';
+  earthHint.style.top  = (y - 28) + 'px';
+  earthHint.classList.add('show');
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => earthHint.classList.remove('show'), 1800);
+}
+
+// Mouse
+earthZone.addEventListener('mouseenter', e => showHint(e.clientX, e.clientY));
+earthZone.addEventListener('mouseleave', () => earthHint.classList.remove('show'));
+
+earthZone.addEventListener('mousedown', e => {
+  isDragging = true;
+  dragStartX  = e.clientX;
+  dragStartRot = earthRot;
+  dragStartSun = sunAngleDeg;
+  earthZone.classList.add('dragging');
+  earthHint.classList.remove('show');
+  e.preventDefault();
+});
+
+window.addEventListener('mousemove', e => {
+  if(!isDragging) return;
+  const dx = e.clientX - dragStartX;
+  const er2 = Math.min(W,H) * .55;
+  // one full Earth diameter drag = one full texture rotation
+  earthRot = ((dragStartRot + dx / (er2 * 2)) % 1 + 1) % 1;
+  // horizontal drag across full width = 360° day cycle
+  sunAngleDeg = dragStartSun - (dx / W) * 360;
+  updateTheme();
+});
+
+window.addEventListener('mouseup', () => {
+  if(!isDragging) return;
+  isDragging = false;
+  earthZone.classList.remove('dragging');
+});
+
+// Touch
+earthZone.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  isDragging   = true;
+  dragStartX   = t.clientX;
+  dragStartRot = earthRot;
+  dragStartSun = sunAngleDeg;
+  showHint(t.clientX, t.clientY);
+  e.preventDefault();
+}, { passive: false });
+
+window.addEventListener('touchmove', e => {
+  if(!isDragging) return;
+  const t = e.touches[0];
+  const dx = t.clientX - dragStartX;
+  const er2 = Math.min(W,H) * .55;
+  earthRot = ((dragStartRot + dx / (er2 * 2)) % 1 + 1) % 1;
+  sunAngleDeg = dragStartSun - (dx / W) * 360;
+  updateTheme();
+}, { passive: false });
+
+window.addEventListener('touchend', () => { isDragging = false; });
+
+// Keep zone positioned after resize
+const _origResize = resize;
+window.removeEventListener('resize', resize);
+window.addEventListener('resize', () => { _origResize(); positionEarthZone(); });
+
+/* BOOT */
+resize();
+positionEarthZone();
+render();
+updateTheme();
+</script>
+</body>
+</html>
