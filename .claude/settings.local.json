@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/shrih/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(py --version)",
+      "Bash(py -c ' *)",
+      "Bash(py -m pip install pypdf pdfplumber -q)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
