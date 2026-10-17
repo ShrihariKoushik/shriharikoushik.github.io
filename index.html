@@ -366,7 +366,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
       <span style="color:var(--sub);font-weight:400;margin-right:4px">Builds</span>
       <span class="h-role-val" id="tw"></span><span class="h-blink"></span>
     </div>
-    <p class="h-bio"><strong>Software Engineer at Bank of America</strong> — 3.3 years building enterprise AML &amp; Risk systems, leading Java 8→21 + Vaadin→React modernization, shipping AI agents, and competing in national hackathons.</p>
+    <p class="h-bio"><strong>Software Engineer at Bank of America</strong> — <span id="yrs-bio">3.3</span> years building enterprise AML &amp; Risk systems, leading Java 8→21 + Vaadin→React modernization, shipping AI agents, and competing in national hackathons.</p>
     <div class="h-btns">
       <a href="#projects" class="btn-p">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -379,7 +379,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
 <a href="https://drive.google.com/file/d/1HSmBRndzS1IayiaEUzwmGCmKfgKrhzTk/view?usp=sharing" target="_blank" rel="noopener" class="btn-g">       <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 16l-4-4h2.5V4h3v8H16l-4 4z"/><path d="M4 20h16" stroke-linecap="round"/></svg>  Resume       </a>
     </div>
     <div class="h-stats">
-      <div class="hst"><div class="hst-n" data-count="3.3">3.3</div><div class="hst-l">Yrs at BoA</div></div>
+      <div class="hst"><div class="hst-n" id="yrs-stat">3.3</div><div class="hst-l">Yrs at BoA</div></div>
       <div class="hst"><div class="hst-n" data-count="2">2</div><div class="hst-l">BoA Awards</div></div>
       <div class="hst"><div class="hst-n" data-count="6">6</div><div class="hst-l">Projects</div></div>
       <div class="hst"><div class="hst-n" data-count="8" data-suf=".75">8.75</div><div class="hst-l">CGPA</div></div>
@@ -405,7 +405,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
       <div class="hterm-divider ht-anim ht-a10"></div>
       <div class="hterm-chips ht-anim ht-a10">
         <div class="hterm-chip">🟢 Open to PM &amp; Engineering roles</div>
-        <div class="hterm-chip">⚡ 3.3 yrs enterprise · AML &amp; Risk</div>
+        <div class="hterm-chip">⚡ <span id="yrs-chip">3.3</span> yrs enterprise · AML &amp; Risk</div>
         <div class="hterm-chip">🏆 PFRDA APIX 2026 · 2nd Runner-Up</div>
       </div>
     </div>
@@ -419,7 +419,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
   <div class="sec-head rv">
     <div class="sec-tag">About</div>
     <h2 class="sec-title">Engineer. Builder. <span class="gt">Product Thinker.</span></h2>
-    <p class="sec-sub">3.3 years turning regulatory complexity into elegant engineering at one of the world's largest banks.</p>
+    <p class="sec-sub"><span id="yrs-about">3.3</span> years turning regulatory complexity into elegant engineering at one of the world's largest banks.</p>
   </div>
   <div class="bento">
     <div class="card about-bio bento-bio rv rv-d1">
@@ -440,12 +440,12 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
   <div class="sec-head rv">
     <div class="sec-tag">Experience</div>
     <h2 class="sec-title">Where I've <span class="gt">Made Impact</span></h2>
-    <p class="sec-sub">3.3 years of enterprise engineering at Bank of America, leading technical transformation.</p>
+    <p class="sec-sub"><span id="yrs-exp">3.3</span> years of enterprise engineering at Bank of America, leading technical transformation.</p>
   </div>
   <div class="card exp-card rv">
     <div class="exp-sidebar">
       <div class="exp-logo">Bank of America</div>
-      <div class="exp-period"><div class="live">July 2023 →</div><div>Present</div><div style="color:var(--dim);font-size:.63rem;margin-top:5px;font-family:'Space Mono',monospace;">~3.3 YEARS</div></div>
+      <div class="exp-period"><div class="live">July 2023 →</div><div>Present</div><div style="color:var(--dim);font-size:.63rem;margin-top:5px;font-family:'Space Mono',monospace;">~<span id="yrs-sidebar">3.3</span> YEARS</div></div>
       <div class="exp-loc">📍 Hyderabad, India</div>
       <div class="exp-status"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);flex-shrink:0"></span>Promoted</div>
     </div>
@@ -457,6 +457,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
         <div class="ei"><span class="eico eo">📊</span><span><strong>Silver Award + Employee of the Month:</strong> Designed Tableau dashboards surfacing compliance control gaps, enabling proactive risk remediation at enterprise scale.</span></div>
         <div class="ei"><span class="eico eb">🤖</span><span><strong>AI/ML Development:</strong> Leading POCs for AI agents automating operational tasks; scoping LLM-powered workflows in a regulated banking environment.</span></div>
         <div class="ei"><span class="eico ep">⚙️</span><span><strong>Legacy Modernization:</strong> Spring Boot 1.x / Java 8 → 2.7.x / Java 21, Dockerizing, replacing Vaadin monolith with React.js SPA. Full ownership of dependency upgrade strategy.</span></div>
+        <div class="ei"><span class="eico eg">🐳</span><span><strong>App Modernization &amp; Containerization:</strong> Led end-to-end migration of a UI-based legacy desktop application to a fully containerized, cloud-ready architecture — Dockerized services, Kubernetes orchestration, stateless design, and CI/CD pipeline integration for zero-downtime deployments.</span></div>
         <div class="ei"><span class="eico eg">⚡</span><span><strong>Platform Engineering:</strong> Architected microservices achieving <strong>25% reduction in resource utilization</strong>; Kafka event streaming for real-time global ops.</span></div>
         <div class="ei"><span class="eico eb">☁️</span><span><strong>Cloud (AWS + Terraform):</strong> Provisioned and managed scalable AWS infrastructure using Terraform IaC for enterprise-grade deployment.</span></div>
       </div>
@@ -482,7 +483,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
     <div>
       <div class="bf-label">🔒 Professional · Private Codebase</div>
       <div class="bf-title">Bank of America — AML &amp; Risk Governance</div>
-      <div class="bf-desc">Production microservices for global banking compliance. Leading modernization, Kafka streaming, AI agent integrations.</div>
+      <div class="bf-desc">Production microservices for global banking compliance. App modernization, containerization, Kafka streaming &amp; AI agent integrations.</div>
     </div>
     <div class="bf-divider"></div>
     <div class="bf-stats">
@@ -491,34 +492,62 @@ footer{border-top:1px solid var(--border);background:var(--surface);padding:28px
     </div>
     <div class="bf-divider"></div>
     <div class="bf-stats">
-      <div><div class="bf-stat-n">Vaadin→React</div><div class="bf-stat-l">Frontend fully decoupled</div></div>
+      <div><div class="bf-stat-n">UI→Container</div><div class="bf-stat-l">Legacy app fully containerized</div></div>
       <div><div class="bf-stat-n">Sole SME</div><div class="bf-stat-l">Subject matter expert</div></div>
     </div>
   </div>
+  <!-- PINNED PROJECTS -->
+  <div class="row-label rv" style="margin-top:8px;">
+    <div class="row-title"><span>📌</span> Pinned — Research &amp; Flagship</div>
+  </div>
+  <div class="proj-grid rv" style="margin-bottom:32px;">
+    <div class="card pc" style="border-top:3px solid var(--indigo);">
+      <div class="pc-top">
+        <div class="pc-ico pi-v">🔬</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div class="pbadge pbg">IEEE Published · 2023</div>
+          <div class="pbadge" style="background:rgba(79,70,229,.1);border:1px solid rgba(79,70,229,.3);color:var(--indigo);font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;padding:4px 10px;border-radius:50px;">📌 Pinned</div>
+        </div>
+      </div>
+      <div class="pc-name">Motion Blur Image Restoration</div><div class="pc-org">IEEE Research Publication · 2023</div>
+      <div class="pc-desc">Peer-reviewed IEEE paper on a Computer Vision + Deep Learning approach for ML-based motion blur image restoration with high-fidelity reconstruction.</div>
+      <div class="pc-buls">
+        <div class="pcb">Novel DL architecture for blind &amp; non-blind motion blur restoration</div>
+        <div class="pcb">Peer-reviewed and published in IEEE 2023 proceedings</div>
+        <div class="pcb">Achieved state-of-the-art PSNR/SSIM metrics on benchmark datasets</div>
+      </div>
+      <div class="pc-tech"><span class="ptech">Python</span><span class="ptech">Computer Vision</span><span class="ptech">Deep Learning</span><span class="ptech">PyTorch</span><span class="ptech">IEEE</span></div>
+    </div>
+    <div class="card pc" style="border-top:3px solid var(--gold);">
+      <div class="pc-top">
+        <div class="pc-ico pi-p">🏛️</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div class="pbadge pbgold">🥉 2nd Runner-Up · National</div>
+          <div class="pbadge" style="background:rgba(79,70,229,.1);border:1px solid rgba(79,70,229,.3);color:var(--indigo);font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;padding:4px 10px;border-radius:50px;">📌 Pinned</div>
+        </div>
+      </div>
+      <div class="pc-name">NPS Smart Retirement Coach</div><div class="pc-org">PFRDA APIX Hackathon 2026 · National Finalist</div>
+      <div class="pc-desc">AI-powered multilingual retirement coach for India's 300M+ NPS subscribers. Built &amp; presented live to the PFRDA Chairman at a national fintech challenge.</div>
+      <div class="pc-buls">
+        <div class="pcb">Claude Sonnet 4 + Gemini 2.5 Flash · 5 Indian languages with TTS</div>
+        <div class="pcb">NPS corpus projections, SIP calculator &amp; traffic-light health scoring</div>
+        <div class="pcb">Zero-PII, fully client-side · deployed on Vercel</div>
+      </div>
+      <div class="pc-tech"><span class="ptech">JavaScript</span><span class="ptech">Claude API</span><span class="ptech">Gemini API</span><span class="ptech">TTS</span><span class="ptech">Vercel</span><span class="ptech">PFRDA</span></div>
+    </div>
+  </div>
+
   <div class="row-label rv">
     <div class="row-title"><span>🏆</span> Hackathons &amp; AI Products</div>
     <a href="https://github.com/ShrihariKoushik" target="_blank" class="row-more">GitHub <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
   </div>
   <div class="proj-grid rv">
     <div class="card pc">
-      <div class="pc-top"><div class="pc-ico pi-p">🏛️</div><div class="pbadge pbgold">🥉 2nd Runner-Up</div></div>
-      <div class="pc-name">NPS Smart Retirement Coach</div><div class="pc-org">PFRDA APIX Hackathon 2026</div>
-      <div class="pc-desc">AI-powered multilingual retirement coach for India's 300M+ NPS subscribers. Presented to the PFRDA Chairman.</div>
-      <div class="pc-buls"><div class="pcb">Claude Sonnet 4 + Gemini 2.5 Flash for 5 Indian languages</div><div class="pcb">NPS calculator with corpus projections + traffic-light scoring</div><div class="pcb">Zero-PII, fully client-side on Vercel</div></div>
-      <div class="pc-tech"><span class="ptech">JavaScript</span><span class="ptech">Claude API</span><span class="ptech">Gemini API</span><span class="ptech">TTS</span><span class="ptech">Vercel</span></div>
-    </div>
-    <div class="card pc">
       <div class="pc-top"><div class="pc-ico pi-b">⛓️</div><div class="pbadge pbb">Solana Frontier '26 · Participant</div></div>
       <div class="pc-name">ProofStack</div><div class="pc-org">Solana Frontier Hackathon 2026</div>
       <div class="pc-desc">Decentralized credential verification on Solana using compressed NFTs, targeting $1B+ global credential fraud.</div>
       <div class="pc-buls"><div class="pcb">Compressed NFTs for cost-efficient on-chain credential storage</div><div class="pcb">End-to-end product from discovery to live demo</div></div>
       <div class="pc-tech"><span class="ptech">Solana</span><span class="ptech">cNFTs</span><span class="ptech">Rust</span><span class="ptech">Web3.js</span></div>
-    </div>
-    <div class="card pc">
-      <div class="pc-top"><div class="pc-ico pi-v">🔬</div><div class="pbadge pbg">IEEE Published · 2023</div></div>
-      <div class="pc-name">Motion Blur Restoration</div><div class="pc-org">IEEE Research Publication</div>
-      <div class="pc-desc">CV approach for ML-based motion blur image restoration. Peer-reviewed and published IEEE 2023.</div>
-      <div class="pc-tech"><span class="ptech">Python</span><span class="ptech">Computer Vision</span><span class="ptech">Deep Learning</span></div>
     </div>
     <div class="card pc">
       <div class="pc-top"><div class="pc-ico pi-b">🛡️</div><div class="pbadge pbb">Enterprise · AI Security</div></div>
@@ -701,6 +730,19 @@ if(tw){
   setTimeout(type,800);
 }
 
+/* DYNAMIC YEARS OF EXPERIENCE */
+function calcYearsExp(){
+  const start=new Date(2023,6,1); // July 1 2023 (month is 0-indexed)
+  const now=new Date();
+  const months=(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth());
+  return (months/12).toFixed(1);
+}
+const expYrs=calcYearsExp();
+['yrs-stat','yrs-chip','yrs-about','yrs-exp','yrs-sidebar','yrs-bio'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.textContent=expYrs;
+});
+
 /* COUNTERS */
 function runCounter(el){
   if(el.dataset.done)return;
@@ -717,7 +759,25 @@ function runCounter(el){
     if(step>=steps)clearInterval(id);
   },dur/steps);
 }
-setTimeout(()=>document.querySelectorAll('[data-count]').forEach(runCounter),400);
+
+/* Animate the years-stat with count-up from 0 */
+function animateYrsStat(){
+  const el=document.getElementById('yrs-stat');
+  if(!el)return;
+  const target=parseFloat(expYrs);
+  const steps=55,dur=1400;
+  let step=0;
+  const id=setInterval(()=>{
+    step++;
+    const e=1-Math.pow(1-Math.min(step/steps,1),3);
+    el.textContent=(e*target).toFixed(1);
+    if(step>=steps){el.textContent=expYrs;clearInterval(id);}
+  },dur/steps);
+}
+setTimeout(()=>{
+  document.querySelectorAll('[data-count]').forEach(runCounter);
+  animateYrsStat();
+},400);
 
 /* SCROLL REVEAL */
 const rvEls=document.querySelectorAll('.rv');
